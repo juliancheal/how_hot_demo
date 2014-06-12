@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>How hot is it?</title>
+    <meta charset="utf-8" />
+    <link href="style.css" rel="stylesheet"/>
+    <meta name="viewport" content="">
+  </head>
+  <body>
+    <h1>How hot is it!?!</h1>
+    <p id="hawtness">??°</p>
+
+    <script>
+      var es = new EventSource('https://api.spark.io/v1/events/geek-hq/?access_token=b436794008c90abdc724936df95bdec1de882120');
+      es.addEventListener('open', function(e) {
+          console.log("Opened!"); },false);
+      es.addEventListener('error', function(e) {
+          console.log("Errored!"); },false);
+      es.addEventListener('geek-hq/temperature', function(e) {
+        var data = JSON.parse(e.data);
+        console.log(data);
+        
+        var hawtness = data.data;
+        document.getElementById("hawtness").innerHTML = hawtness + "°";
+        
+        document.body.className = hawtness > 26? 'hawt' : (hawtness < 5? 'cold' : '');
+      }, false);
+    </script>
+  </body>
+</html>
